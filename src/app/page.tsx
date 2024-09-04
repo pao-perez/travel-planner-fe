@@ -14,8 +14,8 @@ export default function Home() {
 
   const handleCityChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const cityName = e.target.value;
-    const cityObject = cities.find((city) => city.name === cityName) || null;
-    setSelectedCity(cityObject);
+    const cityObject = cities.find((city) => city.name === cityName);
+    setSelectedCity(cityObject!);
   };
 
   return (

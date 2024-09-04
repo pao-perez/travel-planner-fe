@@ -6,7 +6,7 @@ interface CityState {
   selectedCity: City | null;
   loading: boolean;
   error: string | null;
-  setSelectedCity: (city: City | null) => void;
+  setSelectedCity: (city: City) => void;
 }
 
 const useCityStore = create<CityState>((set) => ({
@@ -36,7 +36,7 @@ const useCityStore = create<CityState>((set) => ({
   error: null,
 
   // Actions
-  setSelectedCity: (city: City | null) => set({ selectedCity: city }),
+  setSelectedCity: (city: City) => set({ selectedCity: city }),
 }));
 
 export default useCityStore;
