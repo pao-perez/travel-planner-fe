@@ -1,22 +1,34 @@
 "use client";
 
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 import useCityStore from "./store/useCityStore";
 import InfoSection from "./components/InfoSection";
 import "./globals.css";
+import Spinner from "./components/Spinner";
 
 export default function Home() {
-  const { cities, selectedCity, setSelectedCity } = useCityStore((state) => ({
-    cities: state.cities,
-    selectedCity: state.selectedCity,
-    setSelectedCity: state.setSelectedCity,
-  }));
+  const {
+    cities,
+    loading,
+    error,
+    selectedCity,
+    setSelectedCity,
+    fetchCities,
+  } = useCityStore();
+
+  useEffect(() => {
+    fetchCities();
+  }, [fetchCities]);
 
   const handleCityChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const cityName = e.target.value;
     const cityObject = cities.find((city) => city.name === cityName);
     setSelectedCity(cityObject!);
   };
+
+  if (loading)
+    return <Spinner />;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
     <main className="flex justify-center min-h-screen bg-gray-100 p-6">

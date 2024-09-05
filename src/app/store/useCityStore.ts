@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { City } from "../types/city";
+import { fetchCities, fetchCityByName } from "../lib/apiClient";
 
 interface CityState {
   cities: City[];
@@ -7,36 +8,42 @@ interface CityState {
   loading: boolean;
   error: string | null;
   setSelectedCity: (city: City) => void;
+  fetchCities: () => Promise<void>;
+  fetchCityByName: (name: string) => Promise<void>;
 }
 
 const useCityStore = create<CityState>((set) => ({
-  // TODO: Move to backend
-  cities: [
-    {
-      name: "london",
-      label: "London",
-      description:
-        "London is the capital and largest city of both England and the United Kingdom, with a population of 8,866,180 in 2022. The wider metropolitan area is the largest in Western Europe, with a population of 14.9 million.",
-    },
-    {
-      name: "paris",
-      label: "Paris",
-      description:
-        "Paris is the fourth-largest city in the European Union and the 30th most densely populated city in the world in 2022.",
-    },
-    {
-      name: "rome",
-      label: "Rome",
-      description:
-        'Rome is often referred to as the City of Seven Hills due to its geographic location, and also as the "Eternal City". Rome is generally considered to be the cradle of Western civilization and Western Christian culture, and the centre of the Catholic Church.',
-    },
-  ],
+  cities: [],
   selectedCity: null,
   loading: false,
   error: null,
 
   // Actions
   setSelectedCity: (city: City) => set({ selectedCity: city }),
+
+  fetchCities: async () => {
+    set({ loading: true, error: null });
+    try {
+      const data = await fetchCities();
+      set({ cities: data, loading: false });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        set({ error: error.message, loading: false });
+      }
+    }
+  },
+
+  fetchCityByName: async (name: string) => {
+    set({ loading: true, error: undefined });
+    try {
+      const data = await fetchCityByName(name);
+      set({ selectedCity: data, loading: false });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        set({ error: error.message, loading: false });
+      }
+    }
+  },
 }));
 
 export default useCityStore;
