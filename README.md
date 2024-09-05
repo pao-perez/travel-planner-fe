@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Travel Planner Frontend Documentation
 
-## Getting Started
+## Overview
 
-First, run the development server:
+The Travel Planner frontend is built using **Next.js** for the user interface, **Zustand** for state management, and **Tailwind CSS** for styling. The frontend fetches data from the backend API, including a list of cities and their respective weather and description details.
+
+### Demo
+- **Frontend Demo:** [Travel Planner Frontend](https://vercel.com/paos-projects-5224611f/travel-planner-fe)
+
+## Setup and Installation
+
+### Prerequisites
+Ensure you have the following installed:
+- Node.js (v14+)
+- npm (v6+)
+- [NextJS](https://nextjs.org/docs/)
+
+### Installation
+1. Clone the repository.
+2. Navigate to the project directory.
+3. Run the following command to install the required dependencies:
+    ```bash
+    npm install
+    ```
+
+### Environment Variables
+
+Ensure the **frontend** is configured to use the correct backend API. You can configure the backend API URL in the `.env.local` file or directly in your API call configurations.
+
+Example `.env.local`:
+
+```env
+NEXT_PUBLIC_BACKEND_API_URL=your_hosted_uri or localhost
+```
+
+Replace the URL with the actual deployed URL of your backend.
+
+### Scripts
+
+- **Development**: Runs the application in development mode.
+    ```bash
+    npm run dev
+    ```
+
+- **Build**: Builds the application for production.
+    ```bash
+    npm run build
+    ```
+
+- **Start**: Starts the production build.
+    ```bash
+    npm run start
+    ```
+
+- **Lint**: Runs linting checks on your codebase.
+    ```bash
+    npm run lint
+    ```
+
+### Running the Application
+
+To run the application in development mode:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To build the application for production:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Project Structure
 
-## Learn More
+The project is structured as follows:
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+│
+├── components/
+│   ├── DashedCard.tsx      # A card component for displaying content with a dashed border
+│   ├── Spinner.tsx         # A loading spinner component
+│   ├── TextDisplay.tsx     # A reusable component to display text content
+│
+├── lib/
+│   └── apiClient.ts        # Contains API client code for fetching city and weather data
+│
+├── stores/
+│   └── useCityStore.ts     # Zustand store for managing selected city and fetching city details
+│
+├── types/                 # Folder containing type definitions
+├── views/                 # Folder containing view components displayed in pages
+├── page.tsx               # Main page component
+├── layout.tsx             # Main layout component
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. Build the production version:
+    ```bash
+    npm run build
+    ```
 
-## Deploy on Vercel
+2. Start the production server:
+    ```bash
+    npm run start
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Dependencies
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Here are the key dependencies used in the project:
+
+- **Next.js**: React-based framework for server-side rendering and static website generation.
+- **React**: Core library for building user interfaces.
+- **Zustand**: Lightweight state management solution for React.
+- **Axios**: Library for making HTTP requests.
+- **Tailwind CSS**: Utility-first CSS framework for building custom designs.
