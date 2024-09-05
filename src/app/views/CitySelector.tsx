@@ -26,7 +26,20 @@ export default function CitySelector() {
     await fetchCityDetails(cityName);
   };
 
-  if (fetchCitiesStatus.loading) return <Spinner />;
+  if (fetchCitiesStatus.loading) {
+    return <Spinner />;
+  }
+
+  if (!cityDetails) {
+    return (
+      <DashedCard>
+        <p className="text-center text-gray-600">
+          Select a city to view the city details
+        </p>
+      </DashedCard>
+    );
+  }
+
   if (fetchCitiesStatus.error)
     return (
       <p className="text-center text-red-500">{fetchCitiesStatus.error}</p>
