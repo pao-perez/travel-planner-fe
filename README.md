@@ -5,7 +5,7 @@
 The Travel Planner frontend is built using **Next.js** for the user interface, **Zustand** for state management, and **Tailwind CSS** for styling. The frontend fetches data from the backend API, including a list of cities and their respective weather and description details.
 
 ### Demo
-- **Frontend Demo:** [Travel Planner Frontend](https://vercel.com/paos-projects-5224611f/travel-planner-fe)
+- **Frontend Demo:** [Travel Planner Frontend](https://travel-planner-fe-kohl.vercel.app)
 
 ## Setup and Installation
 
