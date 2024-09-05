@@ -17,7 +17,12 @@ export const fetchCities = async () => {
   return response.data;
 };
 
-export const fetchCityByName = async (name: string) => {
-  const response = await api.get(`/cities/${name}`);
+export const fetchCityByName = async (cityName: string) => {
+  const response = await api.get(`/cities/${cityName}`);
+  return response.data;
+};
+
+export const fetchWeatherByCityName = async (cityName: string) => {
+  const response = await api.get(`/weather/${cityName}`);
   return response.data;
 };

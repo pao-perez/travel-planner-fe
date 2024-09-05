@@ -1,47 +1,90 @@
-import { create } from "zustand";
+import { create, StoreApi } from "zustand";
 import { City } from "../types/city";
-import { fetchCities, fetchCityByName } from "../lib/apiClient";
+import {
+  fetchCities,
+  fetchCityByName,
+  fetchWeatherByCityName,
+} from "../lib/apiClient";
+import { Weather } from "../types/weather";
+
+type CityWeatherDetail = City & Weather;
+
+interface FetchStatus {
+  loading: boolean;
+  error: string | null;
+}
 
 interface CityState {
   cities: City[];
-  selectedCity: City | null;
-  loading: boolean;
-  error: string | null;
-  setSelectedCity: (city: City) => void;
+  selectedCity: string | null;
+  fetchCitiesStatus: FetchStatus;
+  fetchCityDetailsStatus: FetchStatus;
+  cityDetails: CityWeatherDetail | null;
+
+  setSelectedCity: (cityName: string) => void;
+  setSelectedCityWeather: (city: City, weather: Weather) => void;
   fetchCities: () => Promise<void>;
-  fetchCityByName: (name: string) => Promise<void>;
+  fetchCityDetails: (cityName: string) => Promise<void>;
 }
+
+// Helper function to update loading and error states
+const setStatus = (
+  set: StoreApi<CityState>["setState"],
+  key: "fetchCitiesStatus" | "fetchCityDetailsStatus",
+  loading: boolean,
+  error: string | null = null
+) => {
+  set((state: CityState) => ({
+    [key]: { ...state[key], loading, error },
+  }));
+};
 
 const useCityStore = create<CityState>((set) => ({
   cities: [],
   selectedCity: null,
-  loading: false,
-  error: null,
+  fetchCitiesStatus: {
+    loading: false,
+    error: null,
+  },
+  fetchCityDetailsStatus: {
+    loading: false,
+    error: null,
+  },
+  cityDetails: null,
 
   // Actions
-  setSelectedCity: (city: City) => set({ selectedCity: city }),
+  setSelectedCity: (cityName: string) => set({ selectedCity: cityName }),
+
+  setSelectedCityWeather: (city: City, weather: Weather) => {
+    set({ cityDetails: { ...city, ...weather } });
+  },
 
   fetchCities: async () => {
-    set({ loading: true, error: null });
+    setStatus(set, "fetchCitiesStatus", true);
     try {
       const data = await fetchCities();
-      set({ cities: data, loading: false });
+      set({
+        cities: data,
+      });
+      setStatus(set, "fetchCitiesStatus", false);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        set({ error: error.message, loading: false });
-      }
+      setStatus(set, "fetchCitiesStatus", false, (error as Error).message);
     }
   },
 
-  fetchCityByName: async (name: string) => {
-    set({ loading: true, error: undefined });
+  fetchCityDetails: async (cityName: string) => {
+    setStatus(set, "fetchCityDetailsStatus", true);
     try {
-      const data = await fetchCityByName(name);
-      set({ selectedCity: data, loading: false });
+      const [details, weather] = await Promise.all([
+        fetchCityByName(cityName),
+        fetchWeatherByCityName(cityName),
+      ]);
+      set({
+        cityDetails: { ...details, ...weather },
+      });
+      setStatus(set, "fetchCityDetailsStatus", false);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        set({ error: error.message, loading: false });
-      }
+      setStatus(set, "fetchCityDetailsStatus", false, (error as Error).message);
     }
   },
 }));
