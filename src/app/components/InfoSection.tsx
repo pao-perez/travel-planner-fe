@@ -1,5 +1,3 @@
-import React from "react";
-
 interface InfoSectionProps {
   content: string | undefined;
 }

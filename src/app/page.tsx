@@ -43,6 +43,7 @@ export default function Home() {
               className="w-full p-2 border rounded-lg"
               onChange={handleCityChange}
             >
+              <option>Select a City</option>
               {cities.map((city) => (
                 <option key={city.name} value={city.name}>
                   {city.label}
