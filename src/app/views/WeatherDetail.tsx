@@ -2,6 +2,7 @@ import React from "react";
 import useCityStore from "../store/useCityStore";
 import Spinner from "../components/Spinner";
 import DashedCard from "../components/DashedCard";
+import TextDisplay from "../components/TextDisplay";
 
 export default function WeatherDetail() {
   const { cityDetails, fetchCityDetailsStatus } = useCityStore();
@@ -13,9 +14,7 @@ export default function WeatherDetail() {
   if (!cityDetails) {
     return (
       <DashedCard>
-        <p className="text-center text-gray-600">
-          Select a city to view the weather details
-        </p>
+        <TextDisplay content="Select a city to view the weather details" />
       </DashedCard>
     );
   }

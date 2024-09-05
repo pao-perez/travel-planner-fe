@@ -4,6 +4,7 @@ import { ChangeEvent, useEffect } from "react";
 import useCityStore from "../store/useCityStore";
 import Spinner from "../components/Spinner";
 import DashedCard from "../components/DashedCard";
+import TextDisplay from "../components/TextDisplay";
 
 export default function CitySelector() {
   const {
@@ -30,16 +31,6 @@ export default function CitySelector() {
     return <Spinner />;
   }
 
-  if (!cityDetails) {
-    return (
-      <DashedCard>
-        <p className="text-center text-gray-600">
-          Select a city to view the city details
-        </p>
-      </DashedCard>
-    );
-  }
-
   if (fetchCitiesStatus.error)
     return (
       <p className="text-center text-red-500">{fetchCitiesStatus.error}</p>
@@ -62,7 +53,13 @@ export default function CitySelector() {
           ))}
         </select>
       </div>
-      <DashedCard>{cityDetails?.description}</DashedCard>
+      <DashedCard>
+        {!cityDetails ? (
+          <TextDisplay content="Select a city to view the city details" />
+        ) : (
+          <TextDisplay content={cityDetails.description} />
+        )}
+      </DashedCard>
     </>
   );
 }
