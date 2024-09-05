@@ -7,7 +7,10 @@ import {
 } from "../lib/apiClient";
 import { Weather } from "../types/weather";
 
-type CityWeatherDetail = City & Weather;
+type CityWeatherDetail = City &
+  Weather & {
+    description: string;
+  };
 
 interface FetchStatus {
   loading: boolean;
@@ -22,7 +25,6 @@ interface CityState {
   cityDetails: CityWeatherDetail | null;
 
   setSelectedCity: (cityName: string) => void;
-  setSelectedCityWeather: (city: City, weather: Weather) => void;
   fetchCities: () => Promise<void>;
   fetchCityDetails: (cityName: string) => Promise<void>;
 }
@@ -54,10 +56,6 @@ const useCityStore = create<CityState>((set) => ({
 
   // Actions
   setSelectedCity: (cityName: string) => set({ selectedCity: cityName }),
-
-  setSelectedCityWeather: (city: City, weather: Weather) => {
-    set({ cityDetails: { ...city, ...weather } });
-  },
 
   fetchCities: async () => {
     setStatus(set, "fetchCitiesStatus", true);
